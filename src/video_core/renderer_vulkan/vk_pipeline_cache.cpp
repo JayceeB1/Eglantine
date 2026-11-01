@@ -924,7 +924,7 @@ GraphicsPipeline* PipelineCache::BuiltPipeline(GraphicsPipeline* pipeline) const
     if (pipeline->IsBuilt()) {
         return pipeline;
     }
-    if (maxwell3d->GetNativeMacroEngine().native_turing || !use_asynchronous_shaders) {
+    if (!use_asynchronous_shaders) {
         return pipeline;
     }
     return CanSkipDraw() ? nullptr : pipeline;
