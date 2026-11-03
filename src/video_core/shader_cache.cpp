@@ -95,6 +95,12 @@ bool ShaderCache::RefreshStages(std::array<u64, 6>& unique_hashes) try {
             unique_hashes[index] = 0;
             continue;
         }
+        if (native && index != 1 && index != 5) {
+            // Force standard 2-stage VS+FS Vulkan pipelines in native Switch 2 mode
+            // Skips dummy stages 0, 2, 3 and Stage 4 (Geometry pass), fixing the world map globe draw call
+            unique_hashes[index] = 0;
+            continue;
+        }
         const GPUVAddr shader_addr{native
             ? (static_cast<u64>(shader_config.reserved[0] & 0xff) << 32) | shader_config.reserved[1]
             : base_addr + shader_config.offset};

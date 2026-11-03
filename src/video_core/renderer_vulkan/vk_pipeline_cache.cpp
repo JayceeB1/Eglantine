@@ -323,6 +323,10 @@ Shader::RuntimeInfo MakeRuntimeInfo(std::span<const Shader::IR::Program> program
 }
 
 size_t GetTotalPipelineWorkers() {
+    if (const char* const text = std::getenv("EDEN_NX2_TRANSLATION_WORKERS")) {
+        const auto val = std::strtoul(text, nullptr, 10);
+        if (val > 0) return val;
+    }
     const size_t max_core_threads =
         std::max<size_t>(static_cast<size_t>(std::thread::hardware_concurrency()), 2ULL) - 1ULL;
 #ifdef __ANDROID__
